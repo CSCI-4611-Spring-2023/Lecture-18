@@ -8,6 +8,8 @@ import * as gfx from 'gophergfx'
 
 export class SpriteCharacter extends gfx.Mesh
 {
+    public moveDirection: gfx.Vector2;
+
     private spriteMaterial: gfx.UnlitMaterial;
     private fps: number;
 
@@ -79,6 +81,8 @@ export class SpriteCharacter extends gfx.Mesh
         this.spriteMaterial = new gfx.UnlitMaterial();
         this.material = this.spriteMaterial;
         this.spriteMaterial.texture = this.frontWalkTextures[0];
+
+        this.moveDirection = new gfx.Vector2();
     }
 
     update(): void

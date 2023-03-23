@@ -87,10 +87,56 @@ export class AnimationApp extends gfx.GfxApp
     {
         // Make sure the camera always aims at the sprite
         this.cameraControls.setTargetPoint(this.character.position);
-        
+
         // Update the camera orbit controls
         this.cameraControls.update(deltaTime);
 
         this.character.update();
+    }
+
+    onKeyDown(event: KeyboardEvent): void 
+    {
+        if(event.key == "d" || event.key == "ArrowRight")
+        {
+            this.character.moveDirection.x = 1;
+        }
+        else if(event.key == "a" || event.key == "ArrowLeft")
+        {
+            this.character.moveDirection.x = -1;
+        }
+
+        if(event.key == "w" || event.key == "ArrowUp")
+        {
+            this.character.moveDirection.y = 1;
+        }
+        else if(event.key == "s" || event.key == "ArrowDown")
+        {
+            this.character.moveDirection.y = -1;
+        }
+    }
+
+    onKeyUp(event: KeyboardEvent): void 
+    {
+        if(event.key == "d" || event.key == "ArrowRight")
+        {
+            if(this.character.moveDirection.x == 1)
+                this.character.moveDirection.x = 0;
+        }
+        else if(event.key == "a" || event.key == "ArrowLeft")
+        {
+            if(this.character.moveDirection.x == -1)
+                this.character.moveDirection.x = 0;
+        }
+
+        if(event.key == "w" || event.key == "ArrowUp")
+        {
+            if(this.character.moveDirection.y == 1)
+                this.character.moveDirection.y = 0;
+        }
+        else if(event.key == "s" || event.key == "ArrowDown")
+        {
+            if(this.character.moveDirection.y == -1)
+                this.character.moveDirection.y = 0;
+        }
     }
 }
