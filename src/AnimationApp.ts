@@ -5,9 +5,11 @@
  */ 
 
 import * as gfx from 'gophergfx'
+import { SpriteCharacter } from './SpriteCharacter';
 
 export class AnimationApp extends gfx.GfxApp
 {
+    private character: SpriteCharacter;
     private cameraControls: gfx.OrbitControls;
 
     constructor()
@@ -15,6 +17,7 @@ export class AnimationApp extends gfx.GfxApp
         super();
 
         this.cameraControls = new gfx.OrbitControls(this.camera);
+        this.character = new SpriteCharacter(1, 1, 30);
     }
 
     createScene(): void 
@@ -75,6 +78,8 @@ export class AnimationApp extends gfx.GfxApp
         const vegetation = gfx.ObjLoader.load('./assets/meshes/vegetation.obj');
         vegetation.material = rpgMaterial;
         this.scene.add(vegetation);
+
+        this.scene.add(this.character);
     }
 
     update(deltaTime: number): void 
