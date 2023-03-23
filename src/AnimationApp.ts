@@ -25,9 +25,9 @@ export class AnimationApp extends gfx.GfxApp
         // Setup camera
         this.camera.setPerspectiveCamera(60, 1920/1080, 1, 800);
         this.cameraControls.setTargetPoint(new gfx.Vector3(0, 0, 0));
-        this.cameraControls.setOrbit(gfx.MathUtils.degreesToRadians(-22.5), gfx.MathUtils.degreesToRadians(65));
+        this.cameraControls.setOrbit(gfx.MathUtils.degreesToRadians(-30), gfx.MathUtils.degreesToRadians(-135));
         this.cameraControls.rotationSpeedX = 0;
-        this.cameraControls.setDistance(7);
+        this.cameraControls.setDistance(12);
 
         // Set a black background
         this.renderer.background.set(0, 0, 0);
@@ -48,10 +48,17 @@ export class AnimationApp extends gfx.GfxApp
         sky.material.side = gfx.Side.BACK;
         this.scene.add(sky);
 
+        // Create a sky sphere
+        const ground = gfx.MeshFactory.createPlane(400, 400);
+        ground.rotateX(Math.PI/2);
+        ground.material.setColor(new gfx.Color(.375, .476, .198));
+        this.scene.add(ground);
+
         const rpgMaterial = new gfx.GouraudMaterial();
         rpgMaterial.texture = new gfx.Texture('./assets/textures/rpgpp_lt_tex_a.png');
 
         const terrain = gfx.ObjLoader.load('./assets/meshes/terrain.obj');
+        terrain.position.y = -1;
         terrain.material = rpgMaterial;
         this.scene.add(terrain);
 
@@ -63,24 +70,18 @@ export class AnimationApp extends gfx.GfxApp
         buildings2.material = rpgMaterial;
         this.scene.add(buildings2);
 
-        const path = gfx.ObjLoader.load('./assets/meshes/path.obj');
-        path.material = rpgMaterial;
-        this.scene.add(path);
-
-        const props = gfx.ObjLoader.load('./assets/meshes/props.obj');
-        props.material = rpgMaterial;
-        this.scene.add(props);
-
-        const rocks = gfx.ObjLoader.load('./assets/meshes/rocks.obj');
-        rocks.material = rpgMaterial;
-        this.scene.add(rocks);
-
         const vegetation = gfx.ObjLoader.load('./assets/meshes/vegetation.obj');
+        vegetation.position.y = 0.5;
         vegetation.material = rpgMaterial;
         this.scene.add(vegetation);
 
+        const props = gfx.ObjLoader.load('./assets/meshes/props.obj');
+        props.position.y = 1;
+        props.material = rpgMaterial;
+        this.scene.add(props);
+
         this.character.position.set(-5, 0, 2);
-        this.character.scale.set(1.5, 1.5, 1.5);
+        this.character.scale.set(2, 2, 1);
         this.scene.add(this.character);
     }
 

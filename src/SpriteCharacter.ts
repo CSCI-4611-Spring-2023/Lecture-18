@@ -25,7 +25,8 @@ export class SpriteCharacter extends gfx.Mesh
     {
         super();
 
-        this.fps = fps;
+        // Hack because we exceeded the number of textures
+        this.fps = fps / 3;
 
         const vertices: number[] = [];
         vertices.push(-width/2, -bottomPadding, 0);
@@ -58,28 +59,28 @@ export class SpriteCharacter extends gfx.Mesh
         this.frontWalkTextures = [];
         for(let i=0; i < this.fps; i++)
         {
-            if(i < 10)
-                this.frontWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Front-walk_0' + i + '.png');
+            if(i < 4)
+                this.frontWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Front-walk_0' + i*3 + '.png');
             else
-                this.frontWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Front-walk_' + i + '.png');
+                this.frontWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Front-walk_' + i*3 + '.png');
         }
 
         this.backWalkTextures = [];
         for(let i=0; i < this.fps; i++)
         {
-            if(i < 10)
-                this.backWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Back-walk_0' + i + '.png');
+            if(i < 4)
+                this.backWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Back-walk_0' + i*3 + '.png');
             else
-                this.backWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Back-walk_' + i + '.png');
+                this.backWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Back-walk_' + i*3 + '.png');
         }
 
         this.rightWalkTextures = [];
         for(let i=0; i < this.fps; i++)
         {
-            if(i < 10)
-                this.rightWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Right-walk_0' + i + '.png');
+            if(i < 4)
+                this.rightWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Right-walk_0' + i*3 + '.png');
             else
-                this.rightWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Right-walk_' + i + '.png');
+                this.rightWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Right-walk_' + i*3 + '.png');
         }
 
         this.spriteMaterial = new gfx.UnlitMaterial();
