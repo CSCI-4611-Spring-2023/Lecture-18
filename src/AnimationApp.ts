@@ -25,9 +25,9 @@ export class AnimationApp extends gfx.GfxApp
         // Setup camera
         this.camera.setPerspectiveCamera(60, 1920/1080, 1, 800);
         this.cameraControls.setTargetPoint(new gfx.Vector3(0, 0, 0));
-        this.cameraControls.setOrbit(gfx.MathUtils.degreesToRadians(-22.5), 0);
+        this.cameraControls.setOrbit(gfx.MathUtils.degreesToRadians(-15), gfx.MathUtils.degreesToRadians(65));
         this.cameraControls.rotationSpeedX = 0;
-        this.cameraControls.setDistance(25);
+        this.cameraControls.setDistance(7);
 
         // Set a black background
         this.renderer.background.set(0, 0, 0);
@@ -86,5 +86,7 @@ export class AnimationApp extends gfx.GfxApp
     {
         // Update the camera orbit controls
         this.cameraControls.update(deltaTime);
+
+        this.character.update();
     }
 }
