@@ -17,6 +17,9 @@ export class SpriteCharacter extends gfx.Mesh
     private frontWalkTextures: gfx.Texture[];
     private backWalkTextures: gfx.Texture[];
 
+    private currentFrame: number;
+    private lastFrameTime: number;
+
     constructor(width: number, height: number, bottomPadding: number, fps: number)
     {
         super();
@@ -79,15 +82,56 @@ export class SpriteCharacter extends gfx.Mesh
         }
 
         this.spriteMaterial = new gfx.UnlitMaterial();
+        this.spriteMaterial.side = gfx.Side.DOUBLE;
         this.material = this.spriteMaterial;
         this.spriteMaterial.texture = this.frontWalkTextures[0];
 
         this.moveDirection = new gfx.Vector2();
+        this.currentFrame = 0;
+        this.lastFrameTime = 0;
     }
 
     update(): void
     {
         const camera = gfx.GfxApp.getInstance().camera;
         this.lookAt(camera.position);
+
+        if(this.moveDirection.length() == 0)
+            return;
+
+        const currentTime = Date.now() * 1000;
+        if(currentTime - this.lastFrameTime > 1 / this.fps)
+        {
+            if(this.moveDirection.x > 0)
+            {
+                this.scale.x = 1;
+                this.advanceFrame(this.rightWalkTextures);
+            }
+            else if(this.moveDirection.x < 0)
+            {
+                this.scale.x = -1;
+                this.advanceFrame(this.rightWalkTextures);
+            }
+            else if(this.moveDirection.y > 0)
+            {
+                this.advanceFrame(this.backWalkTextures);
+            }
+            else if(this.moveDirection.y < 0)
+            {
+                this.advanceFrame(this.frontWalkTextures);
+            }
+
+            this.lastFrameTime = currentTime;
+        }
+    }
+
+    private advanceFrame(textures: gfx.Texture[]): void
+    {
+        this.currentFrame++;
+
+        if(this.currentFrame >= textures.length)
+            this.currentFrame = 0;
+        
+        this.spriteMaterial.texture = textures[this.currentFrame];
     }
 }
