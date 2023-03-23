@@ -9,6 +9,7 @@ import * as gfx from 'gophergfx'
 export class SpriteCharacter extends gfx.Mesh
 {
     public moveDirection: gfx.Vector2;
+    public walkSpeed: number;
 
     private spriteMaterial: gfx.UnlitMaterial;
     private fps: number;
@@ -89,9 +90,10 @@ export class SpriteCharacter extends gfx.Mesh
         this.moveDirection = new gfx.Vector2();
         this.currentFrame = 0;
         this.lastFrameTime = 0;
+        this.walkSpeed = 1.5;
     }
 
-    update(): void
+    update(deltaTime: number): void
     {
         const camera = gfx.GfxApp.getInstance().camera;
         this.lookAt(camera.position);
@@ -99,17 +101,17 @@ export class SpriteCharacter extends gfx.Mesh
         if(this.moveDirection.length() == 0)
             return;
 
-        const currentTime = Date.now() * 1000;
+        const currentTime = Date.now() / 1000;
         if(currentTime - this.lastFrameTime > 1 / this.fps)
         {
             if(this.moveDirection.x > 0)
             {
-                this.scale.x = 1;
+                this.scale.x = Math.abs(this.scale.x);
                 this.advanceFrame(this.rightWalkTextures);
             }
             else if(this.moveDirection.x < 0)
             {
-                this.scale.x = -1;
+                this.scale.x = -Math.abs(this.scale.x);
                 this.advanceFrame(this.rightWalkTextures);
             }
             else if(this.moveDirection.y > 0)
@@ -123,6 +125,22 @@ export class SpriteCharacter extends gfx.Mesh
 
             this.lastFrameTime = currentTime;
         }
+
+        // Get the character's walking velocity in world space
+        const velocity = new gfx.Vector3(this.moveDirection.x, 0, -this.moveDirection.y);
+
+        // Rotate in the direction of the camera
+        velocity.rotate(camera.rotation);
+
+        // Zero out any change in height
+        velocity.y = 0;
+
+        // Normalize and scale by the walk speed
+        velocity.normalize();
+        velocity.multiplyScalar(this.walkSpeed * deltaTime);
+
+        // Add to the character's root position
+        this.position.add(velocity);
     }
 
     private advanceFrame(textures: gfx.Texture[]): void
