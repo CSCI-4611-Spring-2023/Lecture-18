@@ -15,17 +15,17 @@ export class SpriteCharacter extends gfx.Mesh
     private frontWalkTextures: gfx.Texture[];
     private backWalkTextures: gfx.Texture[];
 
-    constructor(width: number, height: number, fps: number)
+    constructor(width: number, height: number, bottomPadding: number, fps: number)
     {
         super();
 
         this.fps = fps;
 
         const vertices: number[] = [];
-        vertices.push(-width/2, -height/2, 0);
-        vertices.push(width/2, -height/2, 0);
-        vertices.push(width/2, height/2, 0);
-        vertices.push(-width/2, height/2,0);
+        vertices.push(-width/2, -bottomPadding, 0);
+        vertices.push(width/2, -bottomPadding, 0);
+        vertices.push(width/2, height - bottomPadding, 0);
+        vertices.push(-width/2, height - bottomPadding,0);
 
         const normals: number[] = [];
         normals.push(0, 0, -1);
@@ -48,9 +48,6 @@ export class SpriteCharacter extends gfx.Mesh
         this.setIndices(indices);
         this.setTextureCoordinates(uvs);
         this.createDefaultVertexColors();
-
-        this.spriteMaterial = new gfx.UnlitMaterial();
-        this.material = this.spriteMaterial;
 
         this.frontWalkTextures = [];
         for(let i=0; i < this.fps; i++)
@@ -79,6 +76,8 @@ export class SpriteCharacter extends gfx.Mesh
                 this.rightWalkTextures[i] = new gfx.Texture('./assets/sprites/HumanoidCharacter-Right-walk_' + i + '.png');
         }
 
+        this.spriteMaterial = new gfx.UnlitMaterial();
+        this.material = this.spriteMaterial;
         this.spriteMaterial.texture = this.frontWalkTextures[0];
     }
 

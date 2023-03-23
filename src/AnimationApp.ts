@@ -17,7 +17,7 @@ export class AnimationApp extends gfx.GfxApp
         super();
 
         this.cameraControls = new gfx.OrbitControls(this.camera);
-        this.character = new SpriteCharacter(1, 1, 30);
+        this.character = new SpriteCharacter(1, 512/360, 40/360, 30);
     }
 
     createScene(): void 
@@ -79,11 +79,15 @@ export class AnimationApp extends gfx.GfxApp
         vegetation.material = rpgMaterial;
         this.scene.add(vegetation);
 
+        this.character.position.set(-5, 0, 2);
         this.scene.add(this.character);
     }
 
     update(deltaTime: number): void 
     {
+        // Make sure the camera always aims at the sprite
+        this.cameraControls.setTargetPoint(this.character.position);
+        
         // Update the camera orbit controls
         this.cameraControls.update(deltaTime);
 
